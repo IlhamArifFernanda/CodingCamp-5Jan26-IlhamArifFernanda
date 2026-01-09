@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo Dashboard - IlhamGod</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/style.css" />
+  
+</head>
+
+<body class="min-h-screen bg-slate-200 text-slate-800">
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <!-- Header -->
+    <header class="grid grid-cols-[auto_1fr_auto] items-center rounded-xl border border-slate-300 bg-slate-100 p-5 shadow-sm w-full">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <i class="bi bi-calendar2-check-fill text-2xl text-slate-700"></i>
+      </div>
+
+      <!-- Judul  -->
+      <h1 class="text-center text-xl font-extrabold tracking-tight text-slate-800">
+        TODO DASHBOARD
+      </h1>
+
+      <div class="w-8"></div>
+
+    </header>
+
+    <!-- Stats -->
+    <section class="mt-5 grid gap-3 md:grid-cols-5">
+      <div class="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold uppercase text-slate-500">
+          <span>Total Tasks</span><span>📌</span>
+        </div>
+        <div class="mt-2 text-4xl font-bold text-slate-800" id="stat-total">0</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold uppercase text-slate-500">
+          <span>Completed</span><span>✅</span>
+        </div>
+        <div class="mt-2 text-4xl font-bold text-slate-800" id="stat-done">0</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold uppercase text-slate-500">
+          <span>Progress</span><span>📈</span>
+        </div>
+        <div class="mt-2 text-4xl font-bold text-slate-800"><span id="stat-progress">0</span>%</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold uppercase text-slate-500">
+          <span>Pending</span><span>⏳</span>
+        </div>
+        <div class="mt-2 text-4xl font-bold text-slate-800" id="stat-pending">0</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div class="flex items-center justify-between text-xs font-semibold uppercase text-slate-500">
+          <span>Overdue</span><span>⏰</span>
+        </div>
+        <div class="mt-2 text-4xl font-bold text-red-600" id="stat-overdue">0</div>
+      </div>
+    </section>
+
+    <!-- Progress Bar -->
+    <section id="progress-section" class="mt-4">
+      <div class="h-3 w-full overflow-hidden rounded-full bg-slate-300">
+        <div id="progress-fill"
+          class="h-full w-[0%] rounded-full bg-slate-700 transition-all duration-300"></div>
+      </div>
+    </section>
+
+    <!-- Input Panel -->
+    <section class="mt-5 rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+      <div class="grid gap-3 md:grid-cols-[1fr_220px_140px] md:items-end">
+        <div>
+          <label for="todo-input" class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Task</label>
+          <input id="todo-input" type="text" placeholder="Tulis tugas..."
+            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-slate-600 focus:ring-2 focus:ring-slate-300" />
+        </div>
+
+        <div>
+          <label for="todo-date" class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Due Date</label>
+          <input id="todo-date" type="date"
+            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-slate-600 focus:ring-2 focus:ring-slate-300" />
+        </div>
+
+        <button id="btn-add" type="button"
+          class="rounded-lg bg-slate-700 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 active:translate-y-[1px]">
+          + Add Todo
+        </button>
+      </div>
+
+      <!-- Tools -->
+      <div class="mt-4 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
+        <!-- Search -->
+        <div class="flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-4 py-3">
+          <span class="opacity-70">🔎</span>
+          <input id="search-input" type="text" placeholder="Cari task"
+            class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
+        </div>
+
+        <!-- Sort + Filter + Delete -->
+        <div class="flex flex-wrap gap-2 md:justify-end">
+          <select id="sort-select"
+            aria-label="Sort todos"
+            class="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none hover:bg-slate-100">
+            <option value="newest">Sort: Terbaru</option>
+            <option value="oldest">Sort: Terlama</option>
+            <option value="dueAsc">Sort: Due Date ↑</option>
+            <option value="dueDesc">Sort: Due Date ↓</option>
+            <option value="nameAsc">Sort: Nama A-Z</option>
+            <option value="nameDesc">Sort: Nama Z-A</option>
+          </select>
+
+          <select id="filter-select"
+            aria-label="Filter todos"
+            class="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none hover:bg-slate-100">
+            <option value="all">Filter: Semua</option>
+            <option value="pending">Pending</option>
+            <option value="done">Completed</option>
+            <option value="overdue">Overdue</option>
+          </select>
+
+          <button id="btn-delete-all" type="button"
+            class="rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white hover:bg-red-700 active:translate-y-[1px]">
+            🗑 Delete All
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="mt-5 rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+      <div class="mb-3">
+        <h2 class="text-lg font-extrabold">List of Todos</h2>
+        <p class="text-sm text-slate-500">Klik status untuk toggle selesai.</p>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-slate-300 bg-slate-50">
+        <table class="min-w-[760px] w-full border-collapse">
+          <thead class="bg-slate-100 text-xs uppercase text-slate-500">
+            <tr class="text-left">
+              <th class="px-4 py-3">Task</th>
+              <th class="px-4 py-3">Due Date</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="todo-tbody" class="divide-y divide-slate-300 text-sm">
+            <tr id="empty-row">
+              <td colspan="4" class="px-4 py-6 text-center text-slate-500">
+                Belum ada todo. Tambahkan tugas pertama kamu 🙂
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-6 text-center text-sm text-slate-500">
+      © 2026 IlhamGod • Todo Dashboard
+    </footer>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div id="edit-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 p-4">
+    <div class="w-full max-w-lg rounded-xl border border-slate-300 bg-slate-100 p-5 shadow-lg">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-extrabold text-slate-800">Update Todo</h3>
+        <button id="btn-edit-close" type="button" class="rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200">
+          ✕
+        </button>
+      </div>
+
+      <div class="mt-4 grid gap-3">
+        <div>
+          <label for="edit-task" class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Task</label>
+          <input id="edit-task" type="text"
+            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-slate-600 focus:ring-2 focus:ring-slate-300" />
+        </div>
+
+        <div>
+          <label for="edit-date" class="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-500">Due Date</label>
+          <input id="edit-date" type="date"
+            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-slate-600 focus:ring-2 focus:ring-slate-300" />
+        </div>
+
+        <div class="mt-2 flex gap-2 justify-end">
+          <button id="btn-edit-cancel" type="button"
+            class="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-100">
+            Cancel
+          </button>
+
+          <button id="btn-edit-save" type="button"
+            class="rounded-lg bg-slate-700 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
